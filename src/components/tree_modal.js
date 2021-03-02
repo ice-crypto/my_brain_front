@@ -6,14 +6,18 @@ import { Button, Modal, Form, Input, Radio } from 'antd';
 
 const CollectionCreateForm = ({ visible, onCreate, onCancel, target}) => {
   const [form] = Form.useForm();
-  console.log(target);
+
+
   return (
     <Modal
       visible={visible}
       title="Create a new collection"
       okText="Create"
       cancelText="Cancel"
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel();
+        form.resetFields();
+      }}
       onOk={() => {
         form
           .validateFields()
@@ -30,17 +34,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, target}) => {
         form={form}
         layout="vertical"
         name="form_in_modal"
-        initialValues={{
-          modifier: 'public',
-          target_node: target
-        }}
       >
-      <Form.Item
-        name="target_node"
-        label="Target node key"
-      >
-        <Input/>
-      </Form.Item>
         <Form.Item
           name="node"
           label="Node Name"

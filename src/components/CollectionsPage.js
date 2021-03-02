@@ -20,7 +20,7 @@ const CollectionsPage = ({taget}) => {
         visible={this.props.visible}
         onCreate={this.props.onCreate}
         onCancel={this.props.onCancel}
-        target={target}
+        target={this.props.target}
       />
     </div>
   );

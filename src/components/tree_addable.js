@@ -14,11 +14,9 @@ class TreeAddableObj extends React.Component {
       visible: false,
       target: ''
     };
+    this.onRightClick = this.onRightClick.bind(this);
+    this.onCreate     = this.onCreate.bind(this);
   }
-  // state = {
-  //   props.gData,
-  //   expandedKeys: ['0-0', '0-0-0', '0-0-0-0'],
-  // };
 
   onDragEnter = info => {
     console.log(info);
@@ -94,15 +92,58 @@ class TreeAddableObj extends React.Component {
 
   onRightClick = info => {
     console.log("onRightClick");
+    console.log(info.node.key);
     this.setState({
-      visible: true,
-      target: info.node.key
+      target: info.node.key,
+      visible: true
     });
   }
 
   onCreate = (values) => {
     console.log('Received values of form: ', values);
     this.setState({visible: false});
+    const data = [...this.state.gData];
+    const loop = (data, key, callback) => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].key === key) {
+          return callback(data[i], i, data);
+        }
+        if (data[i].children) {
+          loop(data[i].children, key, callback);
+        }
+      }
+    };
+    let insert_node;
+    let targetObj;
+    loop(data, this.state.target, (item, index, arr) => {
+      targetObj = item
+    });
+    console.log("targetObj");
+    console.log(targetObj);
+    console.log((targetObj.children || []).length > 0);
+    if ((targetObj.children || []).length == 0) {
+      insert_node = [{title: values.node,key: targetObj.key+"-0"}]
+      loop(data, targetObj.key, item => {
+        item["children"] = insert_node;
+      });
+      console.log("chidl");
+    }else{
+      let size;
+      loop(data, targetObj.key, (item, index, arr) => {
+        size = item.children.length;
+      });
+      console.log("size");
+      console.log(size);
+      console.log(targetObj.key+"-"+size);
+      insert_node = {title: values.node,key: targetObj.key+"-"+size}
+      loop(data, targetObj.key, item => {
+        item.children.unshift(insert_node);
+      });
+    }
+    console.log("gdata");console.log(data);
+    this.setState({
+      gData: data,
+    });
   };
 
   render() {
@@ -113,6 +154,7 @@ class TreeAddableObj extends React.Component {
           defaultExpandedKeys={this.state.expandedKeys}
           draggable
           blockNode
+          defaultExpandAll
           onRightClick={this.onRightClick}
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}
