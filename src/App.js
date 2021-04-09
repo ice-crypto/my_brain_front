@@ -8,8 +8,11 @@ import {
   Link
 } from "react-router-dom";
 import ProblemNew from './problem/new'
+import ProblemSolve from './problem/solve'
+import ProblemTodaySolve from './problem/today_problems'
 import CategoryNew from './category/new'
 import BookNew from './book/new'
+import CategoryEdit from './category/edit'
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -36,12 +39,21 @@ function App() {
                 <Menu.Item key="1">
                   <Link to="/new/problem">新規作成</Link>
                 </Menu.Item>
+                <Menu.Item key="2">
+                  <Link to="/solve/problems">復習</Link>
+                </Menu.Item>
+                <Menu.Item key="3">
+                  <Link to="/solve/today_problems">最近の問題</Link>
+                </Menu.Item>
               </SubMenu>
               <SubMenu key="sub2" icon={<UserOutlined />} title="データ編集">
                 <Menu.Item key="2">
                   <Link to="/new/category">新規カテゴリ</Link>
                 </Menu.Item>
                 <Menu.Item key="3">
+                  <Link to="/edit/category">カテゴリ編集</Link>
+                </Menu.Item>
+                <Menu.Item key="4">
                   <Link to="/new/book">新規書籍</Link>
                 </Menu.Item>
               </SubMenu>
@@ -52,8 +64,17 @@ function App() {
             <Route path="/new/problem">
               <ProblemNew/>
             </Route>
+            <Route path="/solve/problems">
+              <ProblemSolve/>
+            </Route>
+            <Route path="/solve/today_problems">
+              <ProblemTodaySolve/>
+            </Route>
             <Route path="/new/category">
               <CategoryNew/>
+            </Route>
+            <Route path="/edit/category">
+              <CategoryEdit/>
             </Route>
             <Route path="/new/book">
               <BookNew/>

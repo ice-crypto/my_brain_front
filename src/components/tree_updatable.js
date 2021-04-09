@@ -5,7 +5,7 @@ import '../index.css';
 import { Tree } from 'antd';
 import CollectionCreateForm from '../components/tree_modal'
 
-class TreeAddableObj extends React.Component {
+class TreeUpdatableObj extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -180,4 +180,4 @@ class TreeAddableObj extends React.Component {
   }
 }
 
-export default TreeAddableObj
+export default TreeUpdatableObj

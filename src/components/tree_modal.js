@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import '../index.css';
 import { Button, Modal, Form, Input, Radio } from 'antd';
 
-const CollectionCreateForm = ({ visible, onCreate, onCancel, target}) => {
+const CollectionCreateForm = ({ visible, onCreate, onCancel, onClick, target}) => {
   const [form] = Form.useForm();
 
 
@@ -30,6 +30,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel, target}) => {
           });
       }}
     >
+    <Button type="primary" onClick={onClick}>削除</Button>
       <Form
         form={form}
         layout="vertical"
