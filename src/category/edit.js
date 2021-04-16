@@ -25,6 +25,7 @@ class CategoryEdit extends Component{
     this.handleButton = this.handleButton.bind(this);
     this.state = {
       gData: [],
+      removes: [],
       isShow: false
     }
   }
@@ -65,8 +66,8 @@ class CategoryEdit extends Component{
     axios.defaults.headers.common['X-CSRF-Token'] = csrfToken();
     axios({
       method : "POST",
-      url : `/api/v1/categories/`,
-      data : {category: {data: this.state.gData}}
+      url : `/api/v1/categories/update_recursive`,
+      data : {category: {data: this.state.gData,removes: this.state.removes}}
     })
     .then((response)=> {
       console.log(response);
@@ -81,7 +82,7 @@ class CategoryEdit extends Component{
   render() {
     let TreeAdd;
     if (this.state.isShow) {
-      TreeAdd = <TreeAddableObj gData={this.state.gData} visible={this.state.isShow}/>;
+      TreeAdd = <TreeUpdatable gData={this.state.gData} removes = {this.state.removes} visible={this.state.isShow}/>;
     }
     return(
       <>

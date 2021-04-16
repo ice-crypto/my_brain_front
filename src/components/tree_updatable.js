@@ -12,7 +12,8 @@ class TreeUpdatableObj extends React.Component {
       gData: props.gData,
       expandedKeys: ['0','0-0', '0-0-0', '0-0-0-0'],
       visible: false,
-      target: ''
+      target: '',
+      removes:props.removes
     };
     this.onRightClick = this.onRightClick.bind(this);
     this.onSelect = this.onSelect.bind(this);
@@ -147,6 +148,9 @@ class TreeUpdatableObj extends React.Component {
     };
 
     loop(data, this.state.target, (item, index, arr) => {
+      var tmp = this.state.removes
+      tmp.push(item['value']);
+      this.setState({removes:tmp});
       arr.splice(index,1);
     });
     this.setState({gData: data});

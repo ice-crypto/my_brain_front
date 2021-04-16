@@ -13,6 +13,7 @@ import ProblemTodaySolve from './problem/today_problems'
 import CategoryNew from './category/new'
 import BookNew from './book/new'
 import CategoryEdit from './category/edit'
+import BlogPost from './blog/post'
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -57,10 +58,18 @@ function App() {
                   <Link to="/new/book">新規書籍</Link>
                 </Menu.Item>
               </SubMenu>
+              <SubMenu key="sub3" icon={<UserOutlined />} title="ブログ">
+                <Menu.Item key="5">
+                  <Link to="/blog/post">新規カテゴリ</Link>
+                </Menu.Item>
+              </SubMenu>
             </Menu>
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
           <Switch>
+            <Route path="/blog/post">
+              <BlogPost/>
+            </Route>
             <Route path="/new/problem">
               <ProblemNew/>
             </Route>
