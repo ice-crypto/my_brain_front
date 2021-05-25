@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { csrfToken } from 'rails-ujs'
 import { Button } from 'antd'
 import 'antd/dist/antd.css';
 import TreeAddableObj from '../components/tree_addable';
 import RootNode from '../components/root_node';
+import AxiosWrapper from '../functions/AxiosWrapper';
 
 const layout = {
   labelCol: { span: 8 },
@@ -38,19 +37,12 @@ class CategoryNew extends Component{
     console.log("handleButton");
   }
   postCategories(event) {
-    axios.defaults.baseURL = 'http://127.0.0.1:3000';
-    axios.defaults.headers.common['X-CSRF-Token'] = csrfToken();
-    axios({
-      method : "POST",
-      url : "/api/v1/categories",
-      data : {category: {data: this.state.gData}}
-    })
-    .then((response)=> {
-      console.log(response);
-    })
-    .catch((error)=> {
-      console.error(error);
-    });
+    AxiosWrapper(
+      "POST",
+      "/api/v1/categories",
+      {category: {data: this.state.gData}},
+      (response) => {console.log(response)}
+    );
   }
   render() {
     let TreeAdd;

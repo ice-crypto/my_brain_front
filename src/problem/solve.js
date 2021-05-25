@@ -4,8 +4,7 @@ import { Cascader, Select, Form, Input, InputNumber, DatePicker, Button, Alert, 
 import ProblemPanel from '../components/problem_panel';
 import QuestionPanel from '../components/question';
 import Clock from '../components/clock';
-import axios from 'axios';
-import { csrfToken } from 'rails-ujs'
+import AxiosWrapper from '../functions/AxiosWrapper';
 
 const layout = {
   labelCol: { span: 8 },
@@ -18,7 +17,6 @@ const tailLayout = {
 class ProblemSolve extends Component{
   constructor() {
     super();
-    axios.defaults.baseURL = 'http://stagingaccessoryriver.net';
     this.getQuestions = this.getQuestions.bind(this);
     this.onFinishFailed = this.onFinishFailed.bind(this);
     this.onFinish = this.onFinish.bind(this);
@@ -39,16 +37,18 @@ class ProblemSolve extends Component{
     }
   }
   getQuestions() {
-    axios.get(`/api/v1/problems/questions`)
-      .then(res => {
+    AxiosWrapper(
+      "GET",
+      "/api/v1/problems/questions",
+      null,
+      (res) => {
         console.log(res);
         this.setState({
           questions:res.data,
           isShow: res.data.length<=1?false:true
         });
-      }).catch(err => {
-        console.log('err:', err);
-    });
+      }
+    )
   }
   onFinish(values) {
     let results=[],ok=1;
@@ -97,18 +97,15 @@ class ProblemSolve extends Component{
     this.formRef.current.resetFields();
   }
   onFinishClick() {
-    axios({
-      method : "POST",
-      url : "/api/v1/problems/analyze",
-      data : {problem: this.state.data}
-    })
-    .then((response)=> {
-      console.log(response);
-      this.setState({response_status: response.status == 200 ? 'success' : 'error'});
-    })
-    .catch((error)=> {
-      console.error(error);
-    });
+    AxiosWrapper(
+      "POST",
+      "/api/v1/problems/analyze",
+      {problem: this.state.data},
+      (response) => {
+        console.log(response);
+        this.setState({response_status: response.status == 200 ? 'success' : 'error'});
+      }
+    )
   }
   componentDidMount() {
     this.getQuestions();

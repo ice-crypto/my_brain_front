@@ -3,8 +3,7 @@ import 'antd/dist/antd.css';
 import { Cascader, Select, Form, Input, InputNumber, DatePicker, Button,Alert } from 'antd';
 import ProblemPanel from '../components/problem_panel';
 import AnswerField from '../components/add_field';
-import axios from 'axios';
-import { csrfToken } from 'rails-ujs'
+import AxiosWrapper from '../functions/AxiosWrapper';
 
 const layout = {
   labelCol: { span: 8 },
@@ -17,7 +16,6 @@ const tailLayout = {
 class ProblemNew extends Component{
   constructor() {
     super();
-    axios.defaults.baseURL = 'http://stagingaccessoryriver.net';
     this.onChange = this.onChange.bind(this);
     this.onFormatChange = this.onFormatChange.bind(this);
     this.onBookChange = this.onBookChange.bind(this);
@@ -55,69 +53,68 @@ class ProblemNew extends Component{
   }
   onRootSelectChange(value) {
     console.log(value);
-    axios.get(`/api/v1/categories/${value}`)
-      .then(res => {
+    AxiosWrapper(
+      'GET',
+      `/api/v1/categories/${value}`,
+      (res) => {
         console.log(res.data);
         this.setState({select_tree:res.data});
-      }).catch(err => {
-        console.log('err:', err);
-    });
+      }
+    );
   }
   onFinish(values) {
     let data;
     values.categories = this.state.categories;
     data = values.book_id;
     delete values.book_id;
-    console.log('Success:', values);
-    axios.defaults.headers.common['X-CSRF-Token'] = csrfToken();
-    axios({
-      method : "POST",
-      url : "/api/v1/problems",
-      data : {problem: values,book: data}
-    })
-    .then((response)=> {
-      console.log(response);
-      this.setState({response_status: response.status == 201 ? 'success' : 'error'});
-    })
-    .catch((error)=> {
-      console.error(error);
-    });
+    AxiosWrapper(
+      "POST",
+      "/api/v1/problems",
+      {problem: values,book: data},
+      this.setState({response_status: response.status == 201 ? 'success' : 'error'})
+    );
   };
   onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);
   };
   getRootCategories() {
-    axios.get(`/api/v1/categories`)
-      .then(res => {
+    AxiosWrapper(
+      "GET",
+      "/api/v1/categories",
+      null,
+      (res) => {
         console.log(res.data);
         let tmp = [];
         res.data.forEach(node => tmp.push({value:node.id,label:node.title}))
         this.setState({root_categories:tmp});
-      }).catch(err => {
-        console.log('err:', err);
-    });
+      }
+    );
   }
   getFormats() {
-    axios.get(`/api/v1/formats`)
-      .then(res => {
+    AxiosWrapper(
+      "GET",
+      "/api/v1/formats",
+      null,
+      (res) => {
         console.log(res.data);
         let tmp = [];
         res.data.forEach(format => tmp.push({value:format.id,label:format.problem_type}))
         this.setState({formats:tmp});
-      }).catch(err => {
-        console.log('err:', err);
-    });
+      }
+    );
   }
   getBooks() {
-    axios.get(`/api/v1/books`)
-      .then(res => {
+    AxiosWrapper(
+      "GET",
+      "/api/v1/books",
+      null,
+      (res) => {
         console.log(res.data);
         let tmp = [];
         res.data.forEach(book => tmp.push({value:book.id,label:book.title}));
         this.setState({books:tmp});
-      }).catch(err => {
-        console.log('err:', err);
-    });
+      }
+    );
   }
   componentDidMount() {
     this.getRootCategories();

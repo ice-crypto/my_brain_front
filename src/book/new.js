@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import { Cascader, Select, Form, Input, InputNumber, DatePicker, Button} from 'antd';
-import axios from 'axios';
-import { csrfToken } from 'rails-ujs'
+import AxiosWrapper from '../functions/AxiosWrapper';
 
 const layout = {
   labelCol: { span: 8 },
@@ -15,7 +14,6 @@ const tailLayout = {
 class BookNew extends Component{
   constructor() {
     super();
-    axios.defaults.baseURL = 'http://stagingaccessoryriver.net';
     this.onChange = this.onChange.bind(this);
     this.onChangeNumber = this.onChangeNumber.bind(this);
     this.onFinish = this.onFinish.bind(this);
@@ -37,44 +35,40 @@ class BookNew extends Component{
   }
   onRootSelectChange(value) {
     console.log(value);
-    axios.get(`/api/v1/categories/${value}`)
-      .then(res => {
+    AxiosWrapper(
+      "GET",
+      `/api/v1/categories/${value}`,
+      null,
+      (res) => {
         console.log(res.data);
         this.setState({select_tree:res.data});
-      }).catch(err => {
-        console.log('err:', err);
-    });
+      }
+    );
   }
   onFinish(values) {
-    console.log('Success:', values);
     values.categories = this.state.categories;
     values.price = this.state.price;
-    axios.defaults.headers.common['X-CSRF-Token'] = csrfToken();
-    axios({
-      method : "POST",
-      url : "/api/v1/books",
-      data : {book: values}
-    })
-    .then((response)=> {
-      console.log(response);
-    })
-    .catch((error)=> {
-      console.error(error);
-    });
+    AxiosWrapper(
+      "POST",
+      "/api/v1/books",
+      {book: values},
+      (res) => console.log(res);
+    );
   };
   onFinishFailed(errorInfo) {
     console.log('Failed:', errorInfo);
   };
   getRootCategories() {
-    axios.get(`/api/v1/categories`)
-      .then(res => {
+    AxiosWrapper(
+      "GET",
+      '/api/v1/categories',
+      (res) => {
         console.log(res.data);
         let tmp = [];
         res.data.forEach(node => tmp.push({value:node.id,label:node.title}))
         this.setState({root_categories:tmp});
-      }).catch(err => {
-        console.log('err:', err);
-    });
+      }
+    );
   }
   componentDidMount() {
     this.getRootCategories();
