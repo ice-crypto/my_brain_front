@@ -17,7 +17,7 @@ const { TabPane } = Tabs;
 class CategoryEdit extends Component{
   constructor() {
     super();
-    axios.defaults.baseURL = 'http://localhost:3000';
+    axios.defaults.baseURL = 'http://stagingaccessoryriver.net';
     this.getCategories = this.getCategories.bind(this);
     this.onFinish = this.onFinish.bind(this);
     this.onFinishFailed = this.onFinishFailed.bind(this);
