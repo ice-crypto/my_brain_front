@@ -71,7 +71,7 @@ class ProblemNew extends Component{
       "POST",
       "/api/v1/problems",
       {problem: values,book: data},
-      this.setState({response_status: response.status == 201 ? 'success' : 'error'})
+      (response) => {this.setState({response_status: response.status == 201 ? 'success' : 'error'})}
     );
   };
   onFinishFailed(errorInfo) {

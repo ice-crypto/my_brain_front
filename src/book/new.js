@@ -52,7 +52,7 @@ class BookNew extends Component{
       "POST",
       "/api/v1/books",
       {book: values},
-      (res) => console.log(res);
+      (res) => console.log(res)
     );
   };
   onFinishFailed(errorInfo) {
