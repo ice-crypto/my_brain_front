@@ -15,7 +15,7 @@ const tailLayout = {
 class BookNew extends Component{
   constructor() {
     super();
-    axios.defaults.baseURL = 'http://localhost:3000';
+    axios.defaults.baseURL = 'http://stagingaccessoryriver.net';
     this.onChange = this.onChange.bind(this);
     this.onChangeNumber = this.onChangeNumber.bind(this);
     this.onFinish = this.onFinish.bind(this);

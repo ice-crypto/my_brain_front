@@ -18,7 +18,7 @@ const tailLayout = {
 class ProblemTodaySolve extends Component{
   constructor() {
     super();
-    axios.defaults.baseURL = 'http://localhost:3000';
+    axios.defaults.baseURL = 'http://stagingaccessoryriver.net';
     this.getQuestions = this.getQuestions.bind(this);
     this.onFinishFailed = this.onFinishFailed.bind(this);
     this.onFinish = this.onFinish.bind(this);
@@ -97,7 +97,7 @@ class ProblemTodaySolve extends Component{
     this.formRef.current.resetFields();
   }
   onFinishClick() {
-    
+
     this.setState({response_status: 'success'});
   }
   componentDidMount() {
